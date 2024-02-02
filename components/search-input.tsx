@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "./ui/badge"
 import { useDebounce } from "@/lib/hooks/use-debounce"
 import useKeypress from "@/lib/hooks/use-keypress"
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export function SearchInput() {
   const [suggestions, setSuggestions] = useState([])
@@ -24,7 +25,7 @@ export function SearchInput() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/words?query=${debouncedSearchInput}`
+        `${API_URL}/words?query=${debouncedSearchInput}`
       )
       const data = await response.json()
       setSuggestions(data)
