@@ -7,16 +7,23 @@ import { Input } from "@/components/ui/input"
 
 import { Badge } from "./ui/badge"
 import { useDebounce } from "@/lib/hooks/use-debounce"
+import useKeypress from "@/lib/hooks/use-keypress"
 
 export function SearchInput() {
   const [suggestions, setSuggestions] = useState([])
   const [searchInput, setSearchInput] = useState("")
   const debouncedSearchInput = useDebounce(searchInput, 200)
+  // useKeypress("Escape", () => setSearchInput(""))
+  useKeypress("Tab", (event) => {
+    event.preventDefault()
+    if (!suggestions.length) return
+    setSearchInput(suggestions[0])
+  })
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/words?query=${searchInput}`
+        `http://localhost:3000/api/words?query=${debouncedSearchInput}`
       )
       const data = await response.json()
       setSuggestions(data)
@@ -40,13 +47,13 @@ export function SearchInput() {
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
-      <div className="flex gap-2">
+      <div className="flex gap-2 overflow-x-auto">
         {suggestions && suggestions.length
           ? suggestions.map((suggestion) => (
               <Badge
                 key={suggestion}
                 variant="outline"
-                className="cursor-pointer"
+                className="whitespace-nowrap cursor-pointer"
                 onClick={() => console.log(suggestion)}
               >
                 {suggestion}
