@@ -12,5 +12,5 @@ export async function GET(request: Request) {
 }
 
 function findWordsThatStartWithString(query: string) {
-  return WORDS.filter((word) => word.startsWith(query));
+  return WORDS.filter((word) => word !== query && word.startsWith(query));
 }

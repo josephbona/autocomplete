@@ -18,6 +18,7 @@ export function SearchInput() {
     event.preventDefault()
     if (!suggestions.length) return
     setSearchInput(suggestions[0])
+    console.log(suggestions[0])
   })
 
   useEffect(() => {
@@ -46,9 +47,14 @@ export function SearchInput() {
           value={searchInput}
           onChange={(e) => handleSearch(e.target.value)}
         />
+        {searchInput && suggestions && suggestions.length ? (
+          <Badge variant="outline" className="top-1/2 right-2 absolute transform -translate-y-1/2">
+            Press TAB to accept {suggestions[0]}
+          </Badge>
+        ) : null}
       </div>
       <div className="flex gap-2 overflow-x-auto">
-        {suggestions && suggestions.length
+        {searchInput && suggestions && suggestions.length
           ? suggestions.map((suggestion) => (
               <Badge
                 key={suggestion}
