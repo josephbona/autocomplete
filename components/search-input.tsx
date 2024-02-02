@@ -6,10 +6,12 @@ import { SearchIcon } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 import { Badge } from "./ui/badge"
+import { useDebounce } from "@/lib/hooks/use-debounce"
 
 export function SearchInput() {
   const [suggestions, setSuggestions] = useState([])
   const [searchInput, setSearchInput] = useState("")
+  const debouncedSearchInput = useDebounce(searchInput, 200)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +22,11 @@ export function SearchInput() {
       setSuggestions(data)
     }
     fetchData()
-  }, [searchInput])
+  }, [debouncedSearchInput])
+
+  function handleSearch(q: string) {
+    setSearchInput(q)
+  }
   return (
     <div className="flex flex-col gap-6">
       <div className="relative">
@@ -31,7 +37,7 @@ export function SearchInput() {
           type="text"
           placeholder="Search until your heart is content..."
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
       <div className="flex gap-2">
