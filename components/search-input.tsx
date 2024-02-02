@@ -50,7 +50,10 @@ export function SearchInput() {
         />
         {searchInput && suggestions && suggestions.length ? (
           <Badge variant="outline" className="top-1/2 right-2 absolute transform -translate-y-1/2">
-            Press TAB to accept {suggestions[0]}
+            <span className="text-muted-foreground mr-1">
+              TAB to use
+            </span>
+            {suggestions[0]}
           </Badge>
         ) : null}
       </div>
