@@ -14,7 +14,7 @@ export function SearchInput() {
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(
-        `http://localhost:3000/api/words?query=${searchInput}`
+        `https://autocomplete-lyart.vercel.app/api/words?query=${searchInput}`
       )
       const data = await response.json()
       setSuggestions(data)
