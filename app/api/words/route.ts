@@ -33,12 +33,39 @@ export async function GET(request: Request) {
       }
     }
 
-    return NextResponse.json(matches);
+    // Create response with CORS headers
+    const response = NextResponse.json(matches);
+    
+    // Add CORS headers
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    return response;
   } catch (error) {
     console.error('Error processing request:', error);
-    return NextResponse.json(
+    const errorResponse = NextResponse.json(
       { error: 'Internal server error' },
       { status: 500 }
     );
+    
+    // Add CORS headers to error response as well
+    errorResponse.headers.set('Access-Control-Allow-Origin', '*');
+    errorResponse.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+    errorResponse.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+    
+    return errorResponse;
   }
+}
+
+// Handle OPTIONS requests for CORS preflight
+export async function OPTIONS(request: Request) {
+  const response = new NextResponse(null, { status: 204 });
+  
+  // Add CORS headers
+  response.headers.set('Access-Control-Allow-Origin', '*');
+  response.headers.set('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  
+  return response;
 }
